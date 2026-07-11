@@ -6,9 +6,9 @@ const PORT = process.env.PORT || 8080;
 
 const server = createServer(handleApplication());
 
-server.listen(PORT, async()=>{
-
+server.listen(PORT, async () => {
     
-
-    console.log(`Server is running in ${process.env.PORT} in ${process.env.ENVIORNMENT} mode`);
+  console.log(
+    `Server is running in ${process.env.PORT} in ${process.env.ENVIORNMENT} mode`
+  );
 });

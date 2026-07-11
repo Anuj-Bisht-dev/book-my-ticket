@@ -4,7 +4,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: sandy
+      POSTGRES_USERNAME: sandy
       POSTGRES_PASSWORD: password 
       POSTGRES_ADMIN: admin
 
