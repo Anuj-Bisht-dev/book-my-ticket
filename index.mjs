@@ -17,7 +17,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT || 8080;
 
 // Equivalent to mongoose connection
-// Pool is nothing but group of connections
+// Pool is nothing but group of connections 
 // If you pick one connection out of the pool and release it
 // the pooler will keep that connection open for sometime to other clients to reuse
 const pool = new pg.Pool({
@@ -56,7 +56,7 @@ app.put("/:id/:name", async (req, res) => {
     // KEEP THE TRANSACTION AS SMALL AS POSSIBLE
     await conn.query("BEGIN");
     //getting the row to make sure it is not booked
-    /// $1 is a variable which we are passing in the array as the second parameter of query function,
+    // $1 is a variable which we are passing in the array as the second parameter of query function,
     // Why do we use $1? -> this is to avoid SQL INJECTION
     // (If you do ${id} directly in the query string,
     // then it can be manipulated by the user to execute malicious SQL code)
