@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
-    "dev": "tsc-watch --onSuccess \"node dist/index.js\""
+    "dev": "tsc-watch --onSuccess \"node dist/index.js\"",
+    "studio": "drizzle-kit studio",
+    "drizzle:build": "drizzle-kit generate",
+    "drizzle:migrate": "drizzle-kit migrate"
   },
   "keywords": [],
   "author": "",

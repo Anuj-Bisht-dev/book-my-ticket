@@ -4,9 +4,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USERNAME: sandy
+      POSTGRES_USER: sandy
       POSTGRES_PASSWORD: password 
-      POSTGRES_ADMIN: admin
+      POSTGRES_DB: postgresdb
 
     volumes:
       - "postgres_data:/var/lib/prostgresql/data"
