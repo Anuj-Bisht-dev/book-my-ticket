@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { ValidationResult } from "../dto/base.dto";
-import { ApiError } from "../utils/api-error";
+import { ValidationResult } from "../dto/base.dto.js";
+import { ApiError } from "../utils/api-error.js";
 
 export const validateDto = (DtoClass: ValidationResult<unknown>) => {
   return (req: Request, res: Response, next: NextFunction) => {
