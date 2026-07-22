@@ -6,11 +6,12 @@ import {
   boolean,
   serial,
   integer,
+  ForeignKey,
 } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", {length: 100}).notNull(),
+  name: varchar("name", { length: 100 }).notNull(),
 
   email: varchar("email", { length: 322 }).notNull(),
   verifyEmail: boolean("verify_email").default(false),
@@ -18,7 +19,7 @@ export const userTable = pgTable("users", {
   verificationToken: varchar("verification_token"),
   verificationTokenExpiresIn: timestamp("verification_token_expires_in"),
 
-  password: varchar("password", {length: 66}).notNull(),
+  password: varchar("password", { length: 66 }).notNull(),
 
   refreshToken: varchar("refresh_token"),
 
@@ -26,9 +27,8 @@ export const userTable = pgTable("users", {
   updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
 });
 
-
 export const seatsTable = pgTable("seats", {
   id: serial("id").primaryKey(),
-  name: varchar("name", {length: 100}),
-  isBooked: integer("is_booked").default(0),
+  name: varchar("name", { length: 100 }),
+  isBooked: integer("isbooked").default(0),
 });

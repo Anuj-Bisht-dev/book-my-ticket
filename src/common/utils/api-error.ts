@@ -22,4 +22,8 @@ export class ApiError extends Error {
   static serverNotResponding(message = "server not responding") {
     return new ApiError(message, 500);
   }
+
+  static notAvailable(message = "not available") {
+    return new ApiError(message, 503);
+  }
 }

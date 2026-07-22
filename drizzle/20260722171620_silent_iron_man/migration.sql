@@ -1,7 +1,7 @@
 CREATE TABLE "seats" (
 	"id" serial PRIMARY KEY,
 	"name" varchar(100),
-	"is_booked" integer DEFAULT 0
+	"isbooked" integer DEFAULT 0
 );
 --> statement-breakpoint
 CREATE TABLE "users" (

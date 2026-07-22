@@ -13,12 +13,12 @@ import {
 } from "./auth.models.js";
 
 const registerController = async (req: Request, res: Response) => {
-  const user = await registerModel.safeParseAsync(req.body);
+  const user = registerModel.safeParse(req.body);
   if (user.error)
     throw ApiError.badRequest(`invalide user input ${user.error.issues}`);
 
   const { name, email, password } = user.data;
-  const registerService = await authService.register(name, email, password);
+  await authService.register(name, email, password);
 
   return ApiResponse.created(
     res,
@@ -27,7 +27,7 @@ const registerController = async (req: Request, res: Response) => {
 };
 
 const verifyEmailController = async (req: Request, res: Response) => {
-  const userToken = await verifyEmailModel.safeParseAsync({
+  const userToken = verifyEmailModel.safeParse({
     token: req.params.token,
   });
   if (userToken.error)
@@ -43,7 +43,7 @@ const verifyEmailController = async (req: Request, res: Response) => {
 
 const refreshTokenController = async (req: Request, res: Response) => {
   const refreshToken = req.cookies?.refreshToken;
-  const userRefreshToken = await refreshTokenModel.safeParseAsync({
+  const userRefreshToken = refreshTokenModel.safeParse({
     token: refreshToken,
   });
   if (userRefreshToken.error)
@@ -70,7 +70,7 @@ const refreshTokenController = async (req: Request, res: Response) => {
 };
 
 const signInController = async (req: Request, res: Response) => {
-  const user = await signInModel.safeParseAsync(req.body);
+  const user = signInModel.safeParse(req.body);
   if (user.error) throw ApiError.badRequest("email or password is invalide");
 
   const { email, password } = user.data;
@@ -96,7 +96,7 @@ const signInController = async (req: Request, res: Response) => {
 };
 
 const signOutController = async (req: Request, res: Response) => {
-  const user = await signOutModel.safeParseAsync(req.params);
+  const user = signOutModel.safeParse(req.params);
   if (user.error) throw ApiError.badRequest("invalide request from user");
 
   const { userId } = user.data;
@@ -109,7 +109,7 @@ const signOutController = async (req: Request, res: Response) => {
 };
 
 const forgotPasswordController = async (req: Request, res: Response) => {
-  const user = await forgotPasswordModel.safeParseAsync(req.body);
+  const user = forgotPasswordModel.safeParse(req.body);
   if (user.error) throw ApiError.badRequest("invalide email");
 
   const { email } = user.data;
@@ -119,7 +119,7 @@ const forgotPasswordController = async (req: Request, res: Response) => {
 };
 
 const resetPasswordController = async (req: Request, res: Response) => {
-  const userPassword = await resetPasswordModel.safeParseAsync(req.body);
+  const userPassword = resetPasswordModel.safeParse(req.body);
   if (userPassword.error)
     throw ApiError.badRequest(`invalide otp ${userPassword.error.message}`);
 

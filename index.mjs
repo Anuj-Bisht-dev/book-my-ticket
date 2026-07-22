@@ -22,10 +22,10 @@ const port = process.env.PORT || 8080;
 // the pooler will keep that connection open for sometime to other clients to reuse
 const pool = new pg.Pool({
   host: "localhost",
-  port: 5433,
-  user: "postgres",
-  password: "postgres",
-  database: "sql_class_2_db",
+  port: 5432,
+  user: "sandy",
+  password: "password",
+  database: "postgresdb",
   max: 20,
   connectionTimeoutMillis: 0,
   idleTimeoutMillis: 0,
@@ -34,9 +34,10 @@ const pool = new pg.Pool({
 const app = new express();
 app.use(cors());
 
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+
 //get all seats
 app.get("/seats", async (req, res) => {
   const result = await pool.query("select * from seats"); // equivalent to Seats.find() in mongoose

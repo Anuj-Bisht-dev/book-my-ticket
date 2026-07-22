@@ -1,8 +1,8 @@
 import { Resend } from "resend";
 import { env } from "./config.env.js";
 import { ApiError } from "../utils/api-error.js";
-import { emailVerificationFormatPages } from "./email.verificationtoken.pages.js";
-import { forgotPasswordFormatPages } from "./email.forgotpasswordtoken.pages.js";
+import { emailVerificationFormatPages } from "../email-pages/email.verificationtoken.pages.js";
+import { forgotPasswordFormatPages } from "../email-pages/email.forgotpasswordtoken.pages.js";
 
 const resend = new Resend(env.RESEND_API_KEY);
 

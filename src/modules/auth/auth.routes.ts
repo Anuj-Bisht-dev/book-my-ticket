@@ -10,18 +10,18 @@ import {
 } from "./auth.controller.js";
 import { authentication } from "./auth.middleware.js";
 
-export const handleRoutes = Router();
+export const handleAuthRoutes = Router();
 
-handleRoutes.get("/", (req, res) => {
-  res.json({
+handleAuthRoutes.get("/", (req, res) => {
+  res.status(200).json({
     message: "server is working properly",
   });
 });
 
-handleRoutes.post("/register", registerController);
-handleRoutes.get("/verify-email/:token", verifyEmailController);
-handleRoutes.post("/sign-in", signInController);
-handleRoutes.post("/sign-out/:userId", authentication, signOutController);
-handleRoutes.post("/refresh-token", refreshTokenController);
-handleRoutes.post("/forgot-password", forgotPasswordController);
-handleRoutes.post("/reset-password", resetPasswordController);
+handleAuthRoutes.post("/register", registerController);
+handleAuthRoutes.get("/verify-email/:token", verifyEmailController);
+handleAuthRoutes.post("/sign-in", signInController);
+handleAuthRoutes.post("/sign-out/:userId", authentication, signOutController);
+handleAuthRoutes.post("/refresh-token", refreshTokenController);
+handleAuthRoutes.post("/forgot-password", forgotPasswordController);
+handleAuthRoutes.post("/reset-password", resetPasswordController);

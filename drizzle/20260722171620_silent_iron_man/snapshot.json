@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "a2d1f94b-6dc4-43ca-b212-a1651e41317b",
+  "id": "937620fc-6a62-4676-8947-7329f8036ffa",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -52,7 +52,7 @@
       "default": "0",
       "generated": null,
       "identity": null,
-      "name": "is_booked",
+      "name": "isbooked",
       "entityType": "columns",
       "schema": "public",
       "table": "seats"

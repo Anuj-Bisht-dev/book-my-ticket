@@ -1,6 +1,8 @@
 import express from "express";
-import { handleRoutes } from "./auth/auth.routes.js";
+import cors from "cors";
 import cookieParser from "cookie-parser";
+import { handleAuthRoutes } from "./auth/auth.routes.js";
+import { handleBookingRoutes } from "./booking/booking.routes.js";
 import { authenticationAddAccessToken } from "./auth/auth.middleware.js";
 
 export const handleApplication = () => {
@@ -8,10 +10,12 @@ export const handleApplication = () => {
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(cors());
   app.use(cookieParser());
   app.use(authenticationAddAccessToken());
 
-  app.use("/api/auth", handleRoutes);
+  app.use("/api/auth", handleAuthRoutes);
+  app.use(handleBookingRoutes);
 
   return app;
 };

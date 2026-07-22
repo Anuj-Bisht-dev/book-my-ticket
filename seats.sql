@@ -2,7 +2,7 @@ SELECT * from seats;
 
  CREATE TABLE seats (
      id SERIAL PRIMARY KEY,
-     name VARCHAR(255),
+     name VARCHAR(255) DEFAULT NULL,
      isbooked INT DEFAULT 0
  );
 INSERT INTO seats (isbooked)
