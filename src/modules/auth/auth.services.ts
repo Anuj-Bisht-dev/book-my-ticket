@@ -8,6 +8,7 @@ import {
   generateRefreshToken,
   generateVerficationToken,
   hashPassword,
+  verifyAccessToken,
   verifyRefreshToken,
 } from "../../common/utils/tokens.utils.js";
 import {
@@ -47,6 +48,37 @@ const register = async (name: string, email: string, password: string) => {
   //verification token email
   try {
     sendVerificationTokenEmail(insertUser?.name, rawToken);
+  } catch (error) {
+    throw ApiError.badRequest("try again verification token not sent");
+  }
+
+  return { rawToken };
+};
+
+const resendVerificationEmail = async (email: string) => {
+  const [user] = await db
+    .select()
+    .from(userTable)
+    .where(eq(userTable.email, email));
+
+  if (!user) throw ApiError.unauthorize("email not exists");
+
+  // verification token
+  const rawToken = generateVerficationToken.rawToken();
+  const verificationToken = generateVerficationToken.hashedToken(rawToken);
+  const verificationTokenExpiresIn = new Date(Date.now() + 15 * 60 * 1000);
+
+  await db
+    .update(userTable)
+    .set({
+      verificationToken,
+      verificationTokenExpiresIn,
+    })
+    .where(eq(userTable.email, email));
+
+  //verification token email
+  try {
+    sendVerificationTokenEmail(user?.name, rawToken);
   } catch (error) {
     throw ApiError.badRequest("try again verification token not sent");
   }
@@ -198,12 +230,31 @@ const resetPassword = async (token: string, newPassword: string) => {
     .where(eq(userTable.id, user.id));
 };
 
+const getMe = async (token: string) => {
+  const userToken = verifyAccessToken(token);
+  if (!userToken) throw ApiError.unauthorize("access token is not valid");
+
+  const userId = userToken.id;
+
+  const [user] = await db
+    .select()
+    .from(userTable)
+    .where(eq(userTable.id, userId));
+  if (!user) throw ApiError.serverNotResponding("user id is not valide.");
+
+  const userName = user.name;
+
+  return { userName };
+};
+
 export {
   register,
+  resendVerificationEmail,
   verifyEmail,
   refreshToken,
   signIn,
   signOut,
   forgotPassword,
   resetPassword,
+  getMe,
 };

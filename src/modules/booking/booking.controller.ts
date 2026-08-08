@@ -30,8 +30,39 @@ const bookingSeatsController = async (req: Request, res: Response) => {
   const { id, name } = userSeatData.data;
 
   await bookingService.bookingSeats(id, name);
-
   return ApiResponse.ok(res, "seats has booked successfully");
 };
 
-export { homeController, seatsController, bookingSeatsController };
+const serveLoginPageController = async (req: Request, res: Response) => {
+  try {
+    res.sendFile(
+      path.join(__dirname, "../../../public/uploads" + "/login-page.html")
+    );
+    // app.use("/uploads", express.static("uploads"));
+  } catch (error) {
+    throw ApiError.serverNotResponding(
+      "file not able to server due to internal issue try again.."
+    );
+  }
+};
+
+/*
+const serveRegisterPageController = async (req: Request, res: Response) => {
+  try {
+    res.sendFile(
+      path.join(__dirname, "../../../public/uploads" + "/register-page.html")
+    );
+  } catch (error) {
+    throw ApiError.serverNotResponding(
+      "file not able to server due to internal issue try again.."
+    );
+  }
+};
+*/
+
+export {
+  homeController,
+  seatsController,
+  bookingSeatsController,
+  serveLoginPageController,
+};

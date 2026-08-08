@@ -3,7 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { handleAuthRoutes } from "./auth/auth.routes.js";
 import { handleBookingRoutes } from "./booking/booking.routes.js";
-import { authenticationAddAccessToken } from "./auth/auth.middleware.js";
+import { authenticationAddAccessToken } from "../common/middlewares/authentication.middleware.js";
 
 export const handleApplication = () => {
   const app = express();
@@ -13,6 +13,7 @@ export const handleApplication = () => {
   app.use(cors());
   app.use(cookieParser());
   app.use(authenticationAddAccessToken());
+  app.use("/public", express.static("public"));
 
   app.use("/api/auth", handleAuthRoutes);
   app.use(handleBookingRoutes);

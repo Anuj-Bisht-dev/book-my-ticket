@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background:
+                linear-gradient(rgba(15, 23, 42, .75),
+                    rgba(15, 23, 42, .75)),
+                url("../../public/images/login-page-bg.jpg");
+
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4 selection:bg-violet-400/40">
+
+    <div class=" w-full max-w-6xl rounded-2xl bg-black/40 shadow-[0_0_20px_rgba(255,255,255,0.2)] border-4 border-slate-500/20 overflow-hidden grid md:grid-cols-2">
+
+        <!-- Left Side Image -->
+        <div class="hidden md:flex items-center justify-center p-2">
+            <img src="../../public/images/login-page-illustration.webp" alt="Login Illustration"
+                class=" h-full w-full opacity-70 rounded-l-lg">
+        </div>
+
+        <!-- Right Side Login Form -->
+        <div class="p-8 md:p-12">
+            <h1 class="text-4xl font-bold text-center mb-2">
+                Welcome Back
+            </h1>
+
+            <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mt-2 mb-4"></div>
+
+            <p class="text-center text-gray-200 font-semibold mb-8">
+                Login to continue
+            </p>
+
+            <form id="loginForm" class="space-y-5">
+
+                <!-- Email -->
+                <div>
+                    <label class="block mb-2 font-medium">
+                        Email
+                    </label>
+                    <input type="email" id="email" placeholder="user123@example.domain"
+                        class="w-full border text-black placeholder:text-black/80 font-semibold rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 opacity-70">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block mb-2 font-medium">
+                        Password
+                    </label>
+                    <input type="password" id="password" placeholder="Password"
+                        class="w-full border opacity-70 text-black placeholder:text-black/80 placeholder:font-semibold rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Error -->
+                <p id="error" class="text-red-500 text-sm hidden"></p>
+
+                <!-- Forgot Password -->
+                <div class="text-right">
+                    <a href="../../public/uploads/forgot-password.html" class="text-blue-600 hover:underline text-md">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <!-- Button -->
+                <button type="submit"
+                    class="w-full py-4 rounded-xl bg-blue-600 text-xl text-white font-bold hover:scale-[1.02] transition">
+                    Login
+                </button>
+
+            </form>
+
+            <p class="text-center text-md text-gray-200 font-semibold mt-8">
+                Don't have an account?
+                <a href="../../public/uploads/register-page.html" class="text-blue-600 font-bold hover:underline">
+                    Register here
+                </a>
+            </p>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    const form = document.getElementById("loginForm");
+    const error = document.getElementById("error");
+
+    form.addEventListener("submit", async (e) => {
+
+        e.preventDefault();
+        error.classList.add("hidden");
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        console.log(email, password);
+
+        if (!email || !password) {
+            error.textContent = "Please fill in all fields.";
+            error.classList.remove("hidden");
+
+            return;
+        }
+
+        const user = { email, password };
+
+        // Backend Request 
+        try {
+            const res = await fetch("/api/auth/sign-in", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(user)
+            });
+
+            const data = await res.json();
+            alert("Login Successful!");
+
+            window.location.href = "http://localhost:8080/home";
+
+        } catch (err) {
+            alert("users email or password is incorrect try again");
+        }
+        form.reset();
+    });
+
+</script>
+
+</html>

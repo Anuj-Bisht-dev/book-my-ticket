@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            min-height: 100vh;
+
+            background:
+                radial-gradient(circle at 20% 20%, rgba(99, 102, 241, .5), transparent 30%),
+                radial-gradient(circle at 80% 30%, rgba(59, 130, 246, .4), transparent 30%),
+                radial-gradient(circle at 50% 80%, rgba(168, 85, 247, .4), transparent 30%),
+                #020617;
+            color: white;
+        }
+
+        @keyframes spin-clockwise {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin-counter {
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        .outer-ring {
+            animation: spin-clockwise 2s linear infinite;
+        }
+
+        .middle-ring {
+            animation: spin-counter 1.5s linear infinite;
+        }
+
+        .inner-ring {
+            animation: spin-clockwise 1s linear infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center px-4 selection:bg-violet-400/40">
+
+    <div
+        class="bg-violet-900/20 w-full max-w-lg rounded-3xl shadow-2xl p-10 shadow-[0_0_20px_rgba(255,255,255,0.05)] border-2 border-slate-500/10">
+
+        <!-- Email Icon -->
+        <div class="flex justify-center">
+            <div class="w-24 h-24 rounded-full bg-blue-100/50 flex items-center justify-center text-5xl">
+                <img src="https://www.svgrepo.com/download/502648/email.svg" alt="email-logo" class="w-16">
+            </div>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="text-3xl font-bold text-center mt-6">
+            Verify Your Email
+        </h1>
+
+        <p class="text-white/60 font-semibold text-center mt-3 leading-7">
+            We've sent a verification email to
+        </p>
+
+        <div class="flex flex-col items-center">
+            <!-- Loader -->
+            <div class="relative w-20 h-20 mt-5 ">
+
+                <!-- Outer Ring -->
+                <div
+                    class="outer-ring absolute inset-0 rounded-full border-[6px] border-transparent border-t-blue-600 border-l-blue-600">
+                </div>
+
+                <!-- Middle Ring -->
+                <div
+                    class="middle-ring absolute inset-3 rounded-full border-[6px] border-transparent border-r-cyan-500 border-b-cyan-500">
+                </div>
+
+                <!-- Inner Ring -->
+                <div
+                    class="inner-ring absolute inset-6 rounded-full border-[6px] border-transparent border-t-violet-500 border-r-violet-500">
+                </div>
+
+                <!-- Center Dot -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-4 h-4 rounded-full bg-blue-600 animate-pulse"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="bg-white/80 rounded-xl p-4 mt-5 mb-8">
+
+            <h2 class="font-semibold mb-3 text-black">
+                Didn't receive the email?
+            </h2>
+
+            <ul class="space-y-2 text-sm text-gray-800">
+                <li>📂 Check your Spam or Junk folder.</li>
+                <li>📧 Make sure the email address is correct.</li>
+                <li>⏱️ Wait a few minutes before requesting another email.</li>
+            </ul>
+
+        </div>
+
+        <!-- Resend -->
+        <button id="resendBtn"
+            class="w-full py-4 text-xl rounded-xl bg-blue-600 text-white font-semibold hover:scale-[1.02] transition">
+            Resend Verification Email
+        </button>
+
+        <!-- Countdown -->
+        <p id="countdown" class="text-center text-sm text-gray-500 mt-3">
+        </p>
+
+        <!-- Divider -->
+        <div class="flex items-center justify-center my-2">
+            <span class="mx-4 text-gray-400 text-sm">
+                OR
+            </span>
+
+        </div>
+
+        <!-- Login -->
+        <div class="text-center">
+            <a href="../../../public/uploads/login-page.html"
+                class="text-blue-600 hover:underline font-medium text-lg font-semibold">
+                Back to Login
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+
+        const userEmail = document.getElementById("userEmail");
+        const resendBtn = document.getElementById("resendBtn");
+        const countdown = document.getElementById("countdown");
+
+        let timer = 30;
+
+        resendBtn.addEventListener("click", () => {
+            const email = sessionStorage.getItem("email");
+
+            const res = fetch("/api/auth/resend-verification-email", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "email": email
+                })
+            });
+
+            resendBtn.disabled = true;
+            resendBtn.textContent = "Verification Email Sent ✓";
+            countdown.textContent = `You can resend another email in ${timer}s`;
+
+            const interval = setInterval(() => {
+                timer--;
+                countdown.textContent = `You can resend another email in ${timer}s`;
+
+                if (timer === 0) {
+                    clearInterval(interval);
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = "Resend Verification Email";
+                    timer = 30;
+                }
+            }, 1000);
+
+
+            setTimeout(() => {
+                alert("email verified Successfully go back to login.");
+            }, 5 * 1000);
+        });
+
+        setTimeout(() => {
+            alert("email verified Successfully go back to login.");
+        }, 5 * 1000);
+    </script>
+
+</body>
+
+</html>

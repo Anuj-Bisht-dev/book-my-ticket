@@ -6,6 +6,10 @@ const registerModel = z.object({
   password: z.string().min(8).max(66),
 });
 
+const resendVerificationEmailModel = z.object({
+  email: z.string().toLowerCase().trim().max(322),
+});
+
 const verifyEmailModel = z.object({
   token: z.string().trim(),
 });
@@ -32,12 +36,18 @@ const resetPasswordModel = z.object({
   newPassword: z.string().min(8).max(66),
 });
 
+const getMeModel = z.object({
+  token: z.string().trim(),
+});
+
 export {
   registerModel,
+  resendVerificationEmailModel,
   verifyEmailModel,
   signInModel,
   signOutModel,
   refreshTokenModel,
   forgotPasswordModel,
   resetPasswordModel,
+  getMeModel,
 };

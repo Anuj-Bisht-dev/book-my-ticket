@@ -2,7 +2,6 @@ import { and, eq } from "drizzle-orm";
 import { seatsTable } from "../../common/config/db.schema.js";
 import { db } from "../../common/config/index.js";
 import { ApiError } from "../../common/utils/api-error.js";
-import { ApiResponse } from "../../common/utils/api-response.js";
 
 const seats = async () => {
   const result = await db.select().from(seatsTable);
@@ -14,23 +13,24 @@ const seats = async () => {
 const bookingSeats = async (id: number, name: string) => {
   // transactions is using [for booking seats]
   try {
-    db.transaction(async (seats) => {
+    await db.transaction(async (seats) => {
       const seatsResult = await seats
         .select()
         .from(seatsTable)
-        .where(eq(seatsTable.isBooked, 0));
+        .where(eq(seatsTable.id, id))
+        .for("update"); // lock the row till confirms
 
-      if (seatsResult.length === 0) {
-        throw ApiError.notAvailable("all seats are already booked ");
+      if (seatsResult[0]?.isBooked === 1) {
+        throw ApiError.notAvailable("seat is not Available");
       }
 
       await seats
         .update(seatsTable)
-        .set({ isBooked: 1, name })
+        .set({ name, isBooked: 1 })
         .where(eq(seatsTable.id, id));
     });
   } catch (error) {
-    throw ApiError.serverNotResponding(`booking rejected ${error}`);
+    throw ApiError.notAvailable(`booking rejected ${error}`);
   }
 };
 export { seats, bookingSeats };

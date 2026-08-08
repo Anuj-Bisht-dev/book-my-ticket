@@ -6,60 +6,185 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Stellar Seat Booking</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap");
 
     body {
       font-family: "Outfit", sans-serif;
-      background-color: #0f172a;
+      background-color: #141414;
       color: #f8fafc;
     }
+
+    body {
+      background:
+        radial-gradient(circle at top, #1e293b, transparent 40%),
+        linear-gradient(to bottom, #020617, #111827);
+    }
+
+    #ticketHeading {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: 1000;
+    }
   </style>
+
 </head>
 
-<body
-  class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-  <div class="max-w-7xl w-full bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-slate-700/50">
-    <div class="text-center mb-10">
+<body class="min-h-screen selection:bg-violet-400/40">
+  <!-- Header -->
+  <div
+    class="flex items-center justify-between mb-20 px-40 bg-purple-900/30 shadow-[0_2px_10px_rgba(255,255,255,0.1)] border-b-2 border-slate-500/10"
+    id="navbar">
+
+    <!-- Logo -->
+    <div>
+
       <h1
-        class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-4 tracking-tight">
-        ChaiCode Cinema - Now Showing<br />
-        <br />
-        <span class="text-red-400">
-          <span class="font-bold">Dhurandhar The Revenge</span>
-        </span>
+        class="text-2xl xl:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-500">
+        🎬 ChaiCode Cinema
       </h1>
-      <p class="text-slate-400 text-lg">Jassi ko ghar ki yaad kyu nhi aai?</p>
+
+      <p class="text-white/80 mt-2 text-xl xl:2xl">
+        Welcome back,
+        <span id="username" class="text-white font-semibold">
+          Guest
+        </span>
+        👋
+      </p>
     </div>
 
-    <div class="flex justify-center mb-10">
-      <div class="bg-slate-900/50 rounded-full px-6 py-3 border border-slate-700 flex gap-8 items-center">
-        <div class="flex items-center gap-3">
-          <div class="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]"></div>
-          <span class="text-slate-300 font-medium tracking-wide">Available</span>
-        </div>
-        <div class="w-px h-6 bg-slate-700"></div>
-        <div class="flex items-center gap-3">
-          <div class="w-4 h-4 rounded-full bg-rose-500/20 border border-rose-500/50"></div>
-          <span class="text-slate-400 font-medium tracking-wide">Booked</span>
-        </div>
+    <div class="mr-40">
+      <ul class="flex items-center justify-center gap-20 text-xl text-slate-200 font-semibold">
+        <li class="hover:border-b-4">For you</li>
+        <li class="hover:border-b-4">Dining</li>
+        <li class="text-white bg-black/40 rounded-full px-4 py-2 border-2 border-white/30">Tickets</li>
+        <li class="hover:border-b-4">Events</li>
+      </ul>
+    </div>
+
+    <!-- Login / Logout -->
+    <div class="flex gap-3 text-2xl" id="login-logout-btns">
+      <button id="loginBtn"
+        class="px-5 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition">
+        Login
+      </button>
+
+      <button id="logoutBtn"
+        class="hidden px-5 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-semibold transition">
+        Logout
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Movie Heading -->
+
+  <div class="text-center mb-10">
+
+    <h2 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-blue-400">
+      Now Showing
+    </h2>
+
+    <p class="mt-5 text-6xl text-white" id="ticketHeading">
+      Book Your Show Ticket
+    </p>
+
+    <p class="text-slate-400 text-3xl font-semibold mt-5">
+      Dhurandhar The Revenge
+    </p>
+
+  </div>
+
+  <div class="flex justify-center mb-10">
+
+    <div class="bg-slate-900/50 rounded-full px-6 py-3 border border-slate-700 flex gap-8 items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]"></div>
+        <span class="text-slate-300 font-medium tracking-wide">Available</span>
+      </div>
+
+      <div class="w-px h-6 bg-slate-700"></div>
+      <div class="flex items-center gap-3">
+        <div class="w-4 h-4 rounded-full bg-rose-500/20 border border-rose-500/50"></div>
+        <span class="text-slate-400 font-medium tracking-wide">Booked</span>
       </div>
     </div>
 
-    <div class="flex justify-center">
-      <div class="bg-slate-900/40 p-8 rounded-2xl border border-slate-700/50 shadow-inner">
-        <table id="tbl" class="border-separate border-spacing-4 mx-auto"></table>
-      </div>
+  </div>
+
+  <div class="flex justify-center">
+
+    <div class="bg-gray-900/30 p-8 rounded-2xl border border-slate-700/50 shadow-inner">
+      <table id="tbl" class="border-separate border-spacing-4 mx-auto"></table>
     </div>
+
   </div>
 
   <script defer>
+
+    const username = document.getElementById("username");
+    const logBtns = document.getElementById("login-logout-btns");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const userId = localStorage.getItem("id");
+
+    async function loadUser() {
+      try {
+        const res = await fetch("/api/auth/get-me", {
+          method: "POST",
+        });
+
+        if (!res.ok) throw new Error();
+
+        const user = await res.json();
+
+        username.textContent = user.data.userName;
+        console.log(user);
+
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+
+        setInterval(() => {
+          fetch("/api/auth/refresh-token", {
+            method: "POST"
+          });
+          window.location.reload();
+        }, 15 * 60 * 1000);
+
+      } catch {
+
+        username.textContent = "Guest";
+
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+      }
+    }
+    loadUser();
+
+
+    loginBtn.addEventListener("click", () => {
+      window.location.href = "/login-page";
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+
+      await fetch(`/api/auth/sign-out/${userId}`, {
+        method: "POST",
+      });
+
+      window.location.reload();
+    });
+
+
     async function run() {
       const tbl = document.getElementById("tbl");
       const res = await fetch("/seats");
       const resarray = await res.json();
+
       const j = resarray.sort((a, b) => a.id - b.id);
       let tr;
+
       for (let i = 0; i < j.length; i++) {
         if (i % 8 === 0) tr = document.createElement("tr");
 
@@ -67,10 +192,11 @@
 
         // Base aesthetic classes - added 'relative group' for tooltip positioning
         const baseClasses =
-          "w-32 h-32 rounded-2xl text-center align-middle text-2xl font-bold transition-all duration-300 select-none relative group";
+          "w-36 h-36 rounded-2xl text-center align-middle text-3xl font-bold transition-all duration-300 select-none relative group";
 
         if (j[i].isBooked === 1) {
           td.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
+
           td.innerHTML = `
                     <span class="relative z-10">${j[i].id}</span>
                     <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
@@ -80,12 +206,14 @@
                     </div>
                 `;
         } else {
-          td.className = `${baseClasses} bg-emerald-500 text-white border-2 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer hover:bg-emerald-400 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_rgba(16,185,129,0.5)] active:scale-95 active:shadow-[0_0_10px_rgba(16,185,129,0.3)]`;
+          td.className = `${baseClasses} bg-blue-500/80 text-white border-2 border-blue-800 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer hover:bg-blue-700 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_rgba(255,255,255,0.1)] active:scale-95 active:shadow-[0_0_10px_rgba(255,255,255,0.3)]`;
+
           td.innerHTML = `<span class="relative z-10">${j[i].id}</span>`;
         }
 
         td.addEventListener("click", async function (e) {
           const currentTd = e.currentTarget;
+
           if (currentTd.classList.contains("cursor-not-allowed")) {
             return; // Seat is already taken
           }
@@ -93,7 +221,8 @@
           try {
             const id = Number(j[i].id); // Safe from loop closure
             const name = prompt("Enter your name");
-            console.log(name, id);
+            // console.log(name, id);
+
             if (!name) return;
 
             const res = await fetch(`/booking-seats`, {
@@ -106,29 +235,39 @@
             });
             const data = await res.json;
 
-            if (data.error) {
-              alert("FAILED! Couldn't book! already booked.");
-            } else {
+            if (res.status === 401) {
+              window.location.href = "/login-page";
+            }
+
+            if (res.status === 503) {
+              alert("seat is already booked by someone else");
+            }
+
+            else {
               alert("Booked successfully!");
+
               // Visually transition to booked state upon success
               currentTd.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
+
               currentTd.innerHTML = `
-                            <span class="relative z-10">${id}</span>
-                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                                Booked by: <span class="font-bold text-white ml-1">${name}</span>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
-                            </div>`;
+                <span class="relative z-10">${id}</span>
+                <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
+                  Booked by: <span class="font-bold text-white ml-1">${name}</span>
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
+                  <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
+                  </div>`;
             }
           } catch (ex) {
             alert("error booking " + ex);
           }
         });
+
         tr.appendChild(td);
         tbl.appendChild(tr);
       }
     }
     run();
+
   </script>
 </body>
 

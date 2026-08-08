@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+    body {
+        background:
+            linear-gradient(rgba(15, 23, 42, .75),
+                rgba(15, 23, 42, .75)),
+            url("../../public/images/login-page-bg.jpg");
+
+        background-size: cover;
+        background-position: center;
+        color: white;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: left;
+        }
+
+        100% {
+            background-position: right;
+        }
+    }
+</style>
+
+<body class="bg-slate-100 flex items-center justify-center min-h-screen selection:bg-violet-400/40">
+
+
+    <div
+        class="w-full max-w-6xl rounded-2xl overflow-hidden grid md:grid-cols-2 bg-black/40 shadow-[0_0_20px_rgba(255,255,255,0.2)] border-4 border-slate-500/20">
+
+        <!----------------------- Left section ------------------------>
+        <div class="hidden md:flex items-center justify-center p-2">
+            <img src="../../public/images/register-page-illustration.webp" alt="Login Illustration"
+                class=" h-full w-full opacity-70 rounded-l-lg">
+        </div>
+
+        <!---------------------- Right section --------------------->
+        <div class="p-8 md:p-12">
+            <div class="text-center mb-4">
+
+                <h1 class="text-5xl text-white font-bold tracking-wide drop-shadow-sm">
+                    Register
+                </h1>
+
+                <div class="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mt-3"></div>
+
+                <p class="mt-4 text-white font-semibold">
+                    Securely create your account
+                </p>
+
+            </div>
+
+
+            <form id="registerForm" class="space-y-5">
+
+                <!-- Name -->
+                <div>
+                    <label class="block mb-2 font-medium">
+                        Name
+                    </label>
+
+                    <input type="text" id="name" placeholder="kya jiyan hai aap?"
+                        class="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 opacity-70 text-black placeholder:text-black/80 placeholder:font-semibold" />
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block mb-2 font-medium">
+                        Email
+                    </label>
+
+                    <input type="email" id="email" placeholder="user123@example.domain"
+                        class="opacity-70 text-black placeholder:text-black/80 placeholder:font-semibold w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block mb-2 font-medium">
+                        Password
+                    </label>
+
+                    <input type="password" id="password" placeholder="Password"
+                        class="opacity-70 text-black placeholder:text-black/80 placeholder:font-semibold w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <!-- Error Message -->
+                <p id="error" class="text-red-500 text-sm"></p>
+
+                <!-- Register Button -->
+                <button type="submit" id="register-btn"
+                    class="w-full py-4 rounded-xl bg-blue-600 text-white text-xl font-semibold hover:scale-[1.02] transition ">
+                    Register
+                </button>
+
+            </form>
+            <h3 class="text-center text-md text-white font-semibold mt-4">already have an account?
+                <a href="../../public/uploads/login-page.html"
+                    class="text-blue-600 hover:cursor-pointer font-bold hover:underline">login</a>
+            </h3>
+        </div>
+    </div>
+
+    <script>
+        const registerBtn = document.getElementById("register-btn");
+
+        const form = document.getElementById("registerForm");
+        const error = document.getElementById("error");
+
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            error.classList.add("hidden");
+
+            if (!name || !email || !password) {
+                error.textContent = "Please fill in all fields.";
+                error.classList.remove("hidden");
+                return;
+            }
+
+            if (password.length < 6) {
+                error.textContent = "Password must be at least 6 characters.";
+                error.classList.remove("hidden");
+                return;
+            }
+
+            form.reset();
+        });
+
+        // api
+        registerBtn.addEventListener("click", async () => {
+            try {
+
+                const userName = document.getElementById("name").value.trim();
+                const userEmail = document.getElementById("email").value.trim();
+                const userPassword = document.getElementById("password").value.trim();
+
+                const response = await fetch(`/api/auth/register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        "name": userName,
+                        "email": userEmail,
+                        "password": userPassword,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message);
+                }
+
+                alert("verification token sent to given email!");
+                form.reset();
+
+                sessionStorage.setItem("email", userEmail);
+            } catch (err) {
+                console.log(err);
+            }
+        });
+
+
+    </script>
+
+</body>
+
+</html>

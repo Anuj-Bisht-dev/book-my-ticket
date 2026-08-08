@@ -4,13 +4,19 @@ import { ApiError } from "../../common/utils/api-error.js";
 import { ApiResponse } from "../../common/utils/api-response.js";
 import {
   forgotPasswordModel,
+  getMeModel,
   refreshTokenModel,
   registerModel,
+  resendVerificationEmailModel,
   resetPasswordModel,
   signInModel,
   signOutModel,
   verifyEmailModel,
 } from "./auth.models.js";
+import path, { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const registerController = async (req: Request, res: Response) => {
   const user = registerModel.safeParse(req.body);
@@ -26,7 +32,29 @@ const registerController = async (req: Request, res: Response) => {
   );
 };
 
+const resendVerificationEmailController = async (
+  req: Request,
+  res: Response
+) => {
+  const userEmail = resendVerificationEmailModel.safeParse(req.body);
+  if (userEmail.error) throw ApiError.badRequest("email is cannot be null");
+
+  const { email } = userEmail.data;
+
+  await authService.resendVerificationEmail(email);
+
+  return ApiResponse.ok(res, "verification token sent again");
+};
+
 const verifyEmailController = async (req: Request, res: Response) => {
+  res.sendFile(
+    path.join(
+      __dirname +
+        "../../../../public/uploads" +
+        "/waiting-email-verification-page.html"
+    )
+  );
+
   const userToken = verifyEmailModel.safeParse({
     token: req.params.token,
   });
@@ -38,7 +66,7 @@ const verifyEmailController = async (req: Request, res: Response) => {
   const { token } = userToken.data;
   await authService.verifyEmail(token);
 
-  return ApiResponse.ok(res, "user email verified");
+  return ApiResponse.ok(res, "user's email verified");
 };
 
 const refreshTokenController = async (req: Request, res: Response) => {
@@ -121,7 +149,9 @@ const forgotPasswordController = async (req: Request, res: Response) => {
 const resetPasswordController = async (req: Request, res: Response) => {
   const userPassword = resetPasswordModel.safeParse(req.body);
   if (userPassword.error)
-    throw ApiError.badRequest(`invalide otp ${userPassword.error.message}`);
+    throw ApiError.badRequest(
+      `invalide otp or password ${userPassword.error.message}`
+    );
 
   const { token, newPassword } = userPassword.data;
   await authService.resetPassword(token, newPassword);
@@ -129,12 +159,27 @@ const resetPasswordController = async (req: Request, res: Response) => {
   return ApiResponse.ok(res, "user password changed successfully");
 };
 
+const getMeController = async (req: Request, res: Response) => {
+  const refreshToken = req.cookies?.accessToken;
+  const userToken = getMeModel.safeParse({
+    token: refreshToken,
+  });
+  if (userToken.error) throw ApiError.unauthorize("invalid access token.");
+
+  const { token } = userToken.data;
+  const userResult = await authService.getMe(token);
+
+  return ApiResponse.ok(res, "user is logged in", userResult);
+};
+
 export {
   registerController,
+  resendVerificationEmailController,
   verifyEmailController,
   refreshTokenController,
   signInController,
   signOutController,
   forgotPasswordController,
   resetPasswordController,
+  getMeController,
 };

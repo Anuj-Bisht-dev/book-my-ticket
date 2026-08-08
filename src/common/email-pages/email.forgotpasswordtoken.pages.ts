@@ -2,8 +2,7 @@ export const forgotPasswordFormatPages = (
   name: string,
   verificationOtp: string
 ) => {
-  return `html
-<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />

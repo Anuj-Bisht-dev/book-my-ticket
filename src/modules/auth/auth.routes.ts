@@ -1,6 +1,8 @@
 import Router from "express";
 import {
   forgotPasswordController,
+  resendVerificationEmailController,
+  getMeController,
   refreshTokenController,
   registerController,
   resetPasswordController,
@@ -8,7 +10,7 @@ import {
   signOutController,
   verifyEmailController,
 } from "./auth.controller.js";
-import { authentication } from "./auth.middleware.js";
+import { authentication } from "../../common/middlewares/authentication.middleware.js";
 
 export const handleAuthRoutes = Router();
 
@@ -19,9 +21,11 @@ handleAuthRoutes.get("/", (req, res) => {
 });
 
 handleAuthRoutes.post("/register", registerController);
+handleAuthRoutes.post("/resend-verification-email", resendVerificationEmailController);
 handleAuthRoutes.get("/verify-email/:token", verifyEmailController);
 handleAuthRoutes.post("/sign-in", signInController);
-handleAuthRoutes.post("/sign-out/:userId", authentication, signOutController);
+handleAuthRoutes.post("/sign-out/:userId", authentication(), signOutController);
 handleAuthRoutes.post("/refresh-token", refreshTokenController);
 handleAuthRoutes.post("/forgot-password", forgotPasswordController);
 handleAuthRoutes.post("/reset-password", resetPasswordController);
+handleAuthRoutes.post("/get-me", authentication(), getMeController);

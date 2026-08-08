@@ -6,7 +6,6 @@ import {
   boolean,
   serial,
   integer,
-  ForeignKey,
 } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable("users", {
