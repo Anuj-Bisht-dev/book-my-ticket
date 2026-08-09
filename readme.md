@@ -396,124 +396,6 @@ node dist/index.js
 
 ---
 
-# 🔐 Authentication Flow
-
-The authentication system is organized inside the `auth` module.
-
-```text
-Register
-   │
-   ▼
-Validate Request
-   │
-   ▼
-Hash Password
-   │
-   ▼
-Create User
-   │
-   ▼
-Send Verification Email
-   │
-   ▼
-Verify Email
-   │
-   ▼
-Login
-   │
-   ├── Access Token
-   │
-   └── Refresh Token
-```
-
-Protected resources use authentication middleware to validate the user's authentication state before allowing access.
-
----
-
-# 📧 Email System
-
-Email-related functionality is separated into reusable templates under:
-
-```text
-src/common/email-pages/
-```
-
-Currently the project contains templates for:
-
-* Email verification
-* Forgot-password token
-
-Resend is used as the email delivery service.
-
----
-
-# 🎫 Booking Flow
-
-The booking module handles the seat booking functionality.
-
-```text
-Client
-  │
-  ▼
-Booking Route
-  │
-  ▼
-Authentication
-  │
-  ▼
-Booking Middleware
-  │
-  ▼
-Booking Controller
-  │
-  ▼
-Booking Service
-  │
-  ▼
-Drizzle ORM
-  │
-  ▼
-PostgreSQL
-  │
-  ▼
-Seat Status Updated
-```
-
-A major part of the project is handling the database state of seats so that an already-booked seat cannot simply be booked again.
-
-For production-grade concurrent booking, the booking operation should remain atomic at the database level rather than relying only on an application-side availability check.
-
----
-
-# 🧱 Architecture Principles
-
-The project is structured around a few important backend principles:
-
-### Modular Design
-
-Authentication and booking are maintained as separate modules.
-
-### Separation of Concerns
-
-Routes, controllers, services, models, middleware, configuration, and utilities have their own responsibilities.
-
-### Type Safety
-
-TypeScript is used throughout the backend to catch errors during development.
-
-### Database Abstraction
-
-Drizzle ORM provides typed interaction with PostgreSQL.
-
-### Centralized Errors
-
-Custom API error and response utilities provide a consistent way of handling API responses.
-
-### Environment-based Configuration
-
-Secrets and environment-specific configuration are loaded through environment variables.
-
----
 
 # 🔒 Security Considerations
 
@@ -533,7 +415,7 @@ For deployment, make sure to replace all development credentials and secrets wit
 
 ---
 
-# 🛠️ Development Workflow
+# 🛠️ Development Workflow (After project setup complete)
 
 A typical development workflow looks like this:
 
@@ -557,48 +439,6 @@ npm run drizzle:migrate
 # Start development server
 npm run dev
 ```
-
----
-
-# 🐳 Docker Commands
-
-### Start PostgreSQL
-
-```bash
-docker compose up -d
-```
-
-### Stop PostgreSQL
-
-```bash
-docker compose down
-```
-
-### View running containers
-
-```bash
-docker ps
-```
-
-### View PostgreSQL logs
-
-```bash
-docker compose logs postgresdb
-```
-
-### Stop and remove containers
-
-```bash
-docker compose down
-```
-
-The PostgreSQL data is stored in the named Docker volume:
-
-```text
-postgres_data
-```
-
-This allows the database data to persist when the container itself is stopped or recreated.
 
 ---
 
