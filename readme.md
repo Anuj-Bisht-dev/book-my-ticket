@@ -46,47 +46,6 @@ The dependencies above are based on the repository's current `package.json`.
 
 ---
 
-## 🏗️ Project Architecture
-
-The application follows a modular backend architecture.
-
-```text
-Client
-   │
-   ▼
-Express Application
-   │
-   ├── Authentication Module
-   │      ├── Routes
-   │      ├── Controllers
-   │      ├── Services
-   │      ├── Models
-   │      └── Middleware
-   │
-   ├── Booking Module
-   │      ├── Routes
-   │      ├── Controllers
-   │      ├── Services
-   │      ├── Models
-   │      └── Middleware
-   │
-   ├── Common Layer
-   │      ├── Configuration
-   │      ├── Middleware
-   │      ├── Utilities
-   │      └── Email Templates
-   │
-   ▼
-Drizzle ORM
-   │
-   ▼
-PostgreSQL
-```
-
-This separation keeps authentication, booking, shared utilities, configuration, and database concerns organized independently.
-
----
-
 ## 📁 Project Structure
 
 ```text
@@ -154,43 +113,6 @@ book-my-ticket/
 ```
 
 The high-level tree above reflects the repository currently available on GitHub, including the `src/common`, `src/modules`, `drizzle`, `public`, and root configuration files.
-
----
-
-## 🗃️ Database Schema
-
-The project currently uses PostgreSQL with Drizzle ORM.
-
-### Users
-
-The `users` table handles authentication and account verification.
-
-```text
-users
-├── id
-├── name
-├── email
-├── verify_email
-├── verification_token
-├── verification_token_expires_in
-├── password
-├── refresh_token
-├── created_at
-└── updated_at
-```
-
-### Seats
-
-The `seats` table stores ticket/seat availability.
-
-```text
-seats
-├── id
-├── name
-└── isbooked
-```
-
-The current Drizzle schema defines `users` with UUID identifiers and `seats` with serial identifiers.
 
 ---
 
